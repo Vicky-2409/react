@@ -1,15 +1,49 @@
-const parent = React.createElement(
-    "div",
-    {id:"parent"},
-    [React.createElement("div",{id:"child1"},
-       [ React.createElement("h1",{id:"heading1"},"I am from heading1"),
-        React.createElement("h2",{id:"heading2"},"I am from heading2")
-       ]
-    ),React.createElement("div",{id:"child2"},
-        [ React.createElement("h1",{id:"heading1"},"I am from heading1"),
-            React.createElement("h2",{id:"heading2"},"I am from heading2")
-           ]
-    )])
+import React from "react";
+import ReactDOM from "react-dom/client";
+import Header from "./src/components/Header";
+import Body from "./src/components/Body";
+import About from "./src/components/About";
+import Contact from "./src/components/Contact";
+import Error from "./src/components/Error.js";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import Contact from "./src/components/Contact";
+import RestaurantPage from "./src/components/RestaurantPage.js";
 
-const rroot = ReactDOM.createRoot(document.getElementById("root"))
-rroot.render(parent)
+const AppLayout = () => {
+  return (
+    <div className="app-layout">
+      <Header />
+      <Outlet />
+    </div>
+  );
+};
+
+const appRouter = createBrowserRouter([
+  {
+    path: "/",
+    element: <AppLayout />,
+    children: [
+      {
+        path: "/",
+        element: <Body />,
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
+      },
+      {
+        path: "/restaurants/:ResId",
+        element: <RestaurantPage />,
+      },
+    ],
+    errorElement: <Error />,
+  },
+]);
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(<RouterProvider router={appRouter} />);
